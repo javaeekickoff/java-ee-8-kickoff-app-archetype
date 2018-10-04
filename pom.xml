@@ -1,38 +1,140 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"> <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.example.kickoff</groupId>
-  <artifactId>java-ee-kickoff-app-archetype</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>maven-archetype</packaging>
+    <groupId>org.omnifaces</groupId>
+    <artifactId>java-ee-kickoff-app-archetype</artifactId>
+    <version>1.0</version>
+    <packaging>maven-archetype</packaging>
 
-  <name>java-ee-8-kickoff-app-archetype</name>
+    <name>java-ee-8-kickoff-app-archetype</name>
+    <description>Java EE 8 kickoff app template. A minimal runnable Java EE 8 web application with login and an embedded DB</description>
+    <url>https://github.com/javaeekickoff/java-ee-8-kickoff-app-archetype</url>
+    
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
 
-  <build>
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.archetype</groupId>
-        <artifactId>archetype-packaging</artifactId>
-        <version>3.0.1</version>
-      </extension>
-    </extensions>
+    <scm>
+        <url>https://github.com/javaeekickoff/java-ee-8-kickoff-app-archetype</url>
+        <connection>scm:git:git@github.com:javaeekickoff/java-ee-8-kickoff-app-archetype.git</connection>
+        <developerConnection>scm:git:git@github.com:javaeekickoff/java-ee-8-kickoff-app-archetype.git</developerConnection>
+    </scm>
 
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <artifactId>maven-archetype-plugin</artifactId>
-          <version>3.0.1</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
-  <url>https://github.com/javaeekickoff/java-ee-kickoff-app</url>
+    <organization>
+        <name>OmniFaces</name>
+        <url>http://omnifaces.org</url>
+    </organization>
 
-  <scm>
-    <connection>scm:git:git@github.com:javaeekickoff/java-ee-kickoff-app.git</connection>
-    <developerConnection>scm:git:git@github.com:javaeekickoff/java-ee-kickoff-app.git</developerConnection>
-    <url>https://github.com/javaeekickoff/java-ee-kickoff-app</url>
-  </scm>
+    <developers>
+        <developer>
+            <id>arjan.tijms</id>
+            <name>Arjan Tijms</name>
+            <email>arjan.tijms@gmail.com</email>
+        </developer>
+        <developer>
+            <id>balusc</id>
+            <name>Bauke Scholtz</name>
+            <email>balusc@gmail.com</email>
+        </developer>
+        <developer>
+            <id>jan.beernink</id>
+            <name>Jan Beernink</name>
+            <email>jan.beernink@gmail.com</email>
+        </developer>
+    </developers>
+    
+    <inceptionYear>2012</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.archetype</groupId>
+                <artifactId>archetype-packaging</artifactId>
+                <version>3.0.1</version>
+            </extension>
+        </extensions>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-archetype-plugin</artifactId>
+                    <version>3.0.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Configure snapshot deployment to Sonatype. -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- Release deploy: mvn clean deploy -P release -->
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+
+                    <!-- Signing with GPG is a requirement for a release 
+                        deployment (to Maven central) -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
