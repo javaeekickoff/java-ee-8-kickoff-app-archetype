@@ -1,0 +1,30 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition template="/optimusfaces/tags/column.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+>
+	<!-- New custom attribute. -->
+	<ui:param name="type" value="${symbol_pound}{empty type ? 'text' : type}" /> <!-- Value MAY NOT be an EL expression referencing ${symbol_pound}{item}! -->
+
+	<!-- Override default attribute values. -->
+	<ui:param name="head" value="${symbol_pound}{empty head ? i18n['general.' += field] : head}" />
+	<ui:param name="styleClass" value="${symbol_pound}{type} ${symbol_pound}{styleClass}" />
+
+	<ui:define name="cell">
+		<c:choose>
+			<c:when test="${symbol_pound}{type eq 'boolean'}">${symbol_pound}{value ? 'Y' : 'N'}</c:when>
+			<c:when test="${symbol_pound}{type eq 'number'}">${symbol_pound}{of:formatNumberDefault(value)}</c:when>
+			<c:when test="${symbol_pound}{type eq 'currency'}">${symbol_pound}{of:formatCurrency(value, '${symbol_dollar}')}</c:when>
+			<c:when test="${symbol_pound}{type eq 'list'}"><ui:repeat value="${symbol_pound}{value}" var="_item">${symbol_pound}{_item}<br /></ui:repeat></c:when>
+			<c:when test="${symbol_pound}{type eq 'custom'}"><ui:insert /></c:when>
+
+			<!-- Add more types here! -->
+
+			<c:otherwise>${symbol_pound}{value}</c:otherwise>
+		</c:choose>
+	</ui:define>
+</ui:composition>

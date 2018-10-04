@@ -1,0 +1,44 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:k="http://kickoff.example.org/ui"
+>
+	<ui:define name="content">
+		<k:form id="userForm">
+			<h2>${symbol_pound}{i18n['user_profile.header.account']}</h2>
+
+			<k:input id="firstName" value="${symbol_pound}{profileBacking.user.firstName}" />
+			<k:input id="lastName" value="${symbol_pound}{profileBacking.user.lastName}" />
+			<k:input id="email" value="${symbol_pound}{profileBacking.user.email}" disabled="true" />
+			<k:input id="id" value="${symbol_pound}{profileBacking.user.id}" disabled="true" />
+
+			<k:buttons>
+				<k:button id="save" action="${symbol_pound}{profileBacking.save}" />
+			</k:buttons>
+		</k:form>
+
+		<k:form id="changePasswordForm">
+			<h2>${symbol_pound}{i18n['user_profile.header.change_password']}</h2>
+
+			<k:input id="currentPassword" type="password" value="${symbol_pound}{profileBacking.currentPassword}" autocomplete="false" />
+			<k:input id="newPassword" type="password" value="${symbol_pound}{profileBacking.newPassword}" autocomplete="false" />
+			<k:input id="confirmPassword" type="password" value="${symbol_pound}{profileBacking.newPassword}" autocomplete="false" />
+			<o:validateEqual components="newPassword confirmPassword" message="${symbol_pound}{i18n['confirmPasswordValidator']}" showMessageFor="@all" />
+
+			<k:buttons>
+				<k:button id="change" action="${symbol_pound}{profileBacking.changePassword}" />
+			</k:buttons>
+		</k:form>
+	</ui:define>
+</ui:composition>

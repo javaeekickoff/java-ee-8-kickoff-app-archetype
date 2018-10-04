@@ -1,0 +1,76 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!-- 
+	This composite renders three p:selectOneMenu components for day, month and year selection on a java.time.LocalDate.
+-->
+<ui:component
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:k="http://kickoff.example.org/ui"
+>
+	<cc:interface componentType="inputLocalDate" shortDescription="This composite renders three p:selectOneMenu components for day, month and year selection tied to a java.time.LocalDate value.">
+		<cc:attribute name="styleClass" shortDescription="The style class of the field. This is applied on the <code>&lt;div&gt;</code> element representing the whole field." />
+		<cc:attribute name="labelStyleClass" shortDescription="The style class of the label of the field. This is applied on the <code>&lt;label&gt;</code> element representing the label." />
+		<cc:attribute name="inputStyleClass" shortDescription="The style class of the input field itself. This is applied on the <code>&lt;input&gt;</code> elements itself." />
+		<cc:attribute name="messageStyleClass" shortDescription="The style class of the message of the field. This is applied on the <code>&lt;span&gt;</code> element representing the message." />
+		<cc:attribute name="label" shortDescription="The label of the field." required="true" />
+		<cc:attribute name="tooltip" shortDescription="The tooltip of the label of the field." />
+		<cc:attribute name="value" type="java.time.LocalDate" shortDescription="The value of the input field." required="true" />
+		<cc:attribute name="min" type="java.time.LocalDate" shortDescription="The minimum of the input value." />
+		<cc:attribute name="max" type="java.time.LocalDate" shortDescription="The maximum of the input value." />
+		<cc:attribute name="required" type="java.lang.Boolean" default="${symbol_pound}{false}" shortDescription="The required setting of the input field. Defaults to false. Only use this setting for conditionally required fields; normally @NotNull must be used." />
+	</cc:interface>
+
+	<cc:implementation>
+		<div id="${symbol_pound}{cc.clientId}" class="field localDate ${symbol_pound}{cc.attrs.styleClass} ${symbol_pound}{facesContext.getMessageList(cc.clientId)[0].severity}">
+			<cc:renderFacet name="beforeLabel" />
+
+			<h:outputLabel id="l" for="year" value="${symbol_pound}{cc.attrs.label}" styleClass="${symbol_pound}{cc.attrs.labelStyleClass}">
+				<c:if test="${symbol_pound}{not empty cc.attrs.tooltip}"><f:attribute name="title" value="${symbol_pound}{cc.attrs.tooltip}" /></c:if>
+				<cc:renderFacet name="insideLabel" />
+			</h:outputLabel>
+
+			<cc:renderFacet name="beforeInput" />
+
+			<div class="ui-helper-clearfix">
+				<div class="field day">
+					<h:outputLabel id="day_l" for="day" value="${symbol_pound}{cc.resourceBundleMap.day}" />
+					<p:selectOneMenu id="day" binding="${symbol_pound}{cc.day}" styleClass="${symbol_pound}{cc.attrs.inputStyleClass}" label="${symbol_pound}{cc.resourceBundleMap.day}" converter="javax.faces.Integer">
+						<f:selectItem itemValue="${symbol_pound}{null}" itemDisabled="${symbol_pound}{true}" />
+						<f:selectItems value="${symbol_pound}{cc.days}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="field month">
+					<h:outputLabel id="month_l" for="month" value="${symbol_pound}{cc.resourceBundleMap.month}" />
+					<p:selectOneMenu id="month" binding="${symbol_pound}{cc.month}" styleClass="${symbol_pound}{cc.attrs.inputStyleClass}" label="${symbol_pound}{cc.resourceBundleMap.month}" converter="javax.faces.Integer">
+						<f:selectItem itemValue="${symbol_pound}{null}" itemDisabled="${symbol_pound}{true}" />
+						<f:selectItems value="${symbol_pound}{cc.months}" var="m" itemLabel="${symbol_pound}{of:getMonth(m)}" />
+						<p:ajax process="day month" delay="200" listener="${symbol_pound}{cc.updateDaysIfNecessary}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="field year">
+					<h:outputLabel id="year_l" for="year" value="${symbol_pound}{cc.resourceBundleMap.year}" />
+					<p:selectOneMenu id="year" binding="${symbol_pound}{cc.year}" styleClass="${symbol_pound}{cc.attrs.inputStyleClass}" label="${symbol_pound}{cc.resourceBundleMap.year}" converter="javax.faces.Integer">
+						<f:selectItem itemValue="${symbol_pound}{null}" itemDisabled="${symbol_pound}{true}" />
+						<f:selectItems value="${symbol_pound}{cc.years}" />
+						<p:ajax process="month year" delay="200" listener="${symbol_pound}{cc.updateMonthsIfNecessary}" />
+					</p:selectOneMenu>
+				</div>
+			</div>
+
+			<cc:renderFacet name="afterInput" />
+
+			<h:message id="m" for="${symbol_pound}{cc.clientId}" styleClass="message ${symbol_pound}{cc.attrs.messageStyleClass}" />
+		</div>
+	</cc:implementation>
+</ui:component>

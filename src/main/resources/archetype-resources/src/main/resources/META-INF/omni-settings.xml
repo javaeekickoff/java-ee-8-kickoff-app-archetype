@@ -1,0 +1,15 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>
+		Settings for OmniSettings itself.
+	</comment>
+
+    <entry key="stageSystemPropertyName">kickoff.stage</entry>
+
+    <!-- DEFAULT STAGE SHOULD EVENTUALLY BE REMOVED! -->
+    <entry key="defaultStage">local-dev</entry>
+</properties>

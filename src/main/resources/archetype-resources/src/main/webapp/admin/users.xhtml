@@ -1,0 +1,71 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:k="http://kickoff.example.org/ui"
+>
+	<ui:define name="content">
+		<k:form id="usersForm" fieldset="false">
+			<k:table id="usersTable" value="${symbol_pound}{usersBacking.users}">
+				<k:column field="id" type="number" />
+				<k:column field="email" />
+				<k:column field="emailVerified" type="boolean" visible="false" />
+				<k:column field="firstName" visible="false" />
+				<k:column field="lastName" visible="false" />
+				<k:column field="fullName" exportable="false" />
+				<k:column field="groups" type="list" sortable="false" />
+				<k:column field="created" type="instant" />
+				<k:column field="lastModified" type="instant" visible="false" />
+
+				<p:column headerText="${symbol_pound}{i18n['general.actions']}" styleClass="actions">
+					<k:link path="admin/users/edit" value=""><i class="fa fa-pencil" />
+						<f:param name="id" value="${symbol_pound}{item.id}" />
+					</k:link>
+					<p:commandLink id="delete" rendered="${symbol_pound}{item.id gt 1}"
+						onclick="if(!confirm('Are you sure to delete user with ID ${symbol_pound}{user.id}?'))return false" 
+						action="${symbol_pound}{usersBacking.delete(item)}" update="@form"><i class="fa fa-trash" />
+					</p:commandLink>
+				</p:column>
+			</k:table>
+		</k:form>
+	</ui:define>
+</ui:composition>
+
+<!-- 
+				<p:column headerText="Password">
+					<p:commandButton id="selectButton" value="Change password" update=":passwordForm:changePassword" oncomplete="passwordDialog.show()">  
+						<f:setPropertyActionListener value="${symbol_pound}{user}" target="${symbol_pound}{changePasswordBacking.user}" />  
+					</p:commandButton>
+				</p:column>
+
+		<p:dialog header="Change password" widgetVar="passwordDialog" resizable="false" id="passwordDlg" modal="true" closable="true">
+			<h:form id="passwordForm">
+				<o:validateEqual components="password confirmPassword"/>
+	
+				<h:messages id="messages" />
+				<h:panelGrid id="changePassword" columns="2">
+					<f:facet name="header">
+						Change password for user ${symbol_pound}{changePasswordBacking.user.email}
+					</f:facet>
+	
+					<o:outputLabel for="password" value="Password" /><h:inputSecret id="password" value="${symbol_pound}{changePasswordBacking.newPassword}" required="true" />
+					<o:outputLabel for="confirmPassword" value="Confirm password" /><h:inputSecret id="confirmPassword" required="true" />
+					<p>
+						<p:commandButton value="Change password" actionListener="${symbol_pound}{changePasswordBacking.changePassword}" update=":messages :passwordForm" oncomplete="handlePasswordChangeRequest(xhr, status, args)" />
+					</p>
+				</h:panelGrid>
+
+			</h:form>
+	
+		</p:dialog>
+ -->		

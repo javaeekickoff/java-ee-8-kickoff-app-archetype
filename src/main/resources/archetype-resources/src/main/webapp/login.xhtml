@@ -1,0 +1,48 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:k="http://kickoff.example.org/ui"
+>
+	<ui:define name="content">
+		<k:form id="loginForm">
+			<k:dev>
+				<br/>Test users: <code>admin@kickoff.example.org</code>, <code>user@kickoff.example.org</code>
+				<br/>Test password: <code>passw0rd</code>
+			</k:dev>
+
+			<k:input id="email" type="email" value="${symbol_pound}{loginBacking.user.email}">
+				<f:validator validatorId="emailVerifiedValidator" />
+			</k:input>
+			<k:input id="password" type="password" value="${symbol_pound}{loginBacking.password}">
+				<ui:define name="insideLabel">
+					<k:link path="reset-password" value="${symbol_pound}{i18n['general.forgotPassword']}" />
+				</ui:define>
+			</k:input>
+			<k:input id="rememberMe" type="checkbox" value="${symbol_pound}{loginBacking.rememberMe}" />
+
+			<k:buttons>
+				<k:button id="login" action="${symbol_pound}{loginBacking.login}" ajax="false" /> <!-- Ajax must be false, otherwise browser won't remember autofill for login. -->
+			</k:buttons>
+
+			<p>
+				<o:outputFormat value="${symbol_pound}{i18n['login.paragraph.signup']}" escape="false">
+					<o:param>
+						<k:link path="signup">
+							<f:param name="email" value="${symbol_pound}{loginBacking.user.email}" disable="${symbol_pound}{empty loginBacking.user.email}" />
+						</k:link>
+					</o:param>
+				</o:outputFormat>
+			</p>
+		</k:form>
+	</ui:define>
+</ui:composition>

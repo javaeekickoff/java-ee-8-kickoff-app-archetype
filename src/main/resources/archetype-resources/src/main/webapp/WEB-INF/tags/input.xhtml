@@ -1,0 +1,160 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!-- 
+	This tag file renders an input field with label and message list.
+	This must be placed in k:form.
+	The markup is like below:
+
+	<pre>
+		&lt;div id="id_f" class="field {type} {severity}"&gt;
+		    &lt;label id="id_l" /&gt;
+		    &lt;input id="id" widgetVar="id_w" /&gt;
+		    &lt;ul id="id_m" class="messages" /&gt;
+		&lt;/div&gt;
+	</pre>
+-->
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:p="http://primefaces.org/ui"
+>
+	<!-- Field -->
+	<o:tagAttribute name="id" />
+	<o:tagAttribute name="rendered" default="${symbol_pound}{true}" />
+	<o:tagAttribute name="styleClass" />
+	<o:tagAttribute name="labelStyleClass" />
+	<o:tagAttribute name="inputStyleClass" />
+	<o:tagAttribute name="messagesStyleClass" />
+
+	<!-- Label -->
+	<o:tagAttribute name="label" default="${symbol_pound}{i18n['general.' += id]}" />
+	<o:tagAttribute name="tooltip" />
+
+	<!-- Input -->
+	<o:tagAttribute name="type" default="text" />
+	<o:tagAttribute name="value" />
+	<o:tagAttribute name="required" default="${symbol_pound}{false}" />
+	<o:tagAttribute name="disabled" default="${symbol_pound}{false}" />
+	<o:tagAttribute name="autocomplete" default="${symbol_pound}{true}" />
+	<o:tagAttribute name="maxlength" default="${symbol_pound}{255}" />
+	<o:methodParam name="completeMethodParam" value="${symbol_pound}{completeMethod}" />
+
+	<!-- Messages -->
+	<o:tagAttribute name="escapeMessages" default="${symbol_pound}{true}" />
+
+
+	<h:panelGroup layout="block" id="${symbol_pound}{id}_f" styleClass="field ${symbol_pound}{type} ${symbol_pound}{styleClass} ${symbol_pound}{facesContext.getMessageList(component.findComponent(id).clientId)[0].severity}">
+		<c:if test="${symbol_pound}{rendered ne false}">
+			<ui:insert name="beforeLabel" />
+
+			<ui:insert name="label">
+				<h:outputLabel id="${symbol_pound}{id}_l" for="${symbol_pound}{id}" value="${symbol_pound}{label}" styleClass="${symbol_pound}{labelStyleClass}">
+					<c:if test="${symbol_pound}{not empty tooltip}"><f:attribute name="title" value="${symbol_pound}{tooltip}" /></c:if>
+					<span><ui:insert name="insideLabel" /></span>
+				</h:outputLabel>
+			</ui:insert>
+
+			<ui:insert name="beforeInput" />
+
+			<ui:insert name="input">
+				<c:set var="autocomplete" value="${symbol_pound}{autocomplete ne false ? 'on' : 'off'}" />
+
+				<c:choose>
+					<c:when test="${symbol_pound}{type eq 'menu'}">
+						<p:selectOneMenu 
+							id="${symbol_pound}{id}" widgetVar="${symbol_pound}{id}_w" styleClass="${symbol_pound}{inputStyleClass}" label="${symbol_pound}{label}" tabindex="1"
+							value="${symbol_pound}{value}" required="${symbol_pound}{required}" disabled="${symbol_pound}{disabled}" autocomplete="${symbol_pound}{autocomplete}"
+							converter="baseEntitySelectItemsConverter"
+						>
+							<c:if test="${symbol_pound}{not empty var}"><f:attribute name="var" value="${symbol_pound}{var}" /></c:if>
+							<f:selectItem itemValue="${symbol_pound}{null}" itemDisabled="${symbol_pound}{true}" />
+							<ui:insert />
+						</p:selectOneMenu>
+					</c:when>
+					<c:when test="${symbol_pound}{type eq 'checkbox'}">
+						<p:selectBooleanCheckbox
+							id="${symbol_pound}{id}" widgetVar="${symbol_pound}{id}_w" styleClass="${symbol_pound}{inputStyleClass}" label="${symbol_pound}{label}" tabindex="1"
+							value="${symbol_pound}{value}" disabled="${symbol_pound}{disabled}"
+						>
+							<c:if test="${symbol_pound}{required}">
+								<f:validator validatorId="omnifaces.RequiredCheckboxValidator" />
+								<f:attribute name="requiredMessage" value="${symbol_pound}{i18n['tags.input.checkbox.requiredMessage']}" />
+							</c:if>
+							<ui:insert />
+						</p:selectBooleanCheckbox>
+					</c:when>
+					<c:when test="${symbol_pound}{type eq 'checkboxes'}">
+						<p:selectManyCheckbox
+							id="${symbol_pound}{id}" widgetVar="${symbol_pound}{id}_w" styleClass="${symbol_pound}{inputStyleClass}" label="${symbol_pound}{label}" tabindex="1"
+							value="${symbol_pound}{value}" required="${symbol_pound}{required}" disabled="${symbol_pound}{disabled}"
+							layout="pageDirection"
+						>
+							<ui:insert />
+						</p:selectManyCheckbox>
+					</c:when>
+					<c:when test="${symbol_pound}{type eq 'number'}">
+						<p:spinner
+							id="${symbol_pound}{id}" widgetVar="${symbol_pound}{id}_w" styleClass="${symbol_pound}{inputStyleClass}" label="${symbol_pound}{label}" tabindex="1"
+							value="${symbol_pound}{value}" required="${symbol_pound}{required}" disabled="${symbol_pound}{disabled}" autocomplete="${symbol_pound}{autocomplete}"
+							min="${symbol_pound}{min}" max="${symbol_pound}{max}" maxlength="${symbol_pound}{fn:length(max)}"
+						>
+							<ui:insert />
+						</p:spinner>
+					</c:when>
+					<c:when test="${symbol_pound}{type eq 'autocomplete'}">
+						<p:autoComplete 
+							id="${symbol_pound}{id}" widgetVar="${symbol_pound}{id}_w" styleClass="${symbol_pound}{inputStyleClass}" label="${symbol_pound}{label}" tabindex="1"
+							value="${symbol_pound}{value}" required="${symbol_pound}{required}" disabled="${symbol_pound}{disabled}" autocomplete="off"
+							maxlength="${symbol_pound}{maxlength}"
+							queryDelay="200" minQueryLength="${symbol_pound}{minlength}" completeMethod="${symbol_pound}{completeMethodParam}"
+						>
+							<c:if test="${symbol_pound}{not empty var}">
+								<f:attribute name="var" value="${symbol_pound}{var}" />
+								<f:attribute name="itemValue" value="${symbol_pound}{requestScope[var]}" />
+								<f:attribute name="itemLabel" value="${symbol_pound}{itemLabel}" />
+								<o:converter converterId="omnifaces.ListConverter" list="${symbol_pound}{list}" />
+							</c:if>
+							<ui:insert />
+						</p:autoComplete>
+					</c:when>
+					<c:when test="${symbol_pound}{type eq 'password'}">
+						<p:password 
+							id="${symbol_pound}{id}" widgetVar="${symbol_pound}{id}_w" styleClass="${symbol_pound}{inputStyleClass}" label="${symbol_pound}{label}" tabindex="1"
+							value="${symbol_pound}{value}" required="${symbol_pound}{required}" disabled="${symbol_pound}{disabled}" autocomplete="${symbol_pound}{autocomplete}"
+							maxlength="${symbol_pound}{maxlength}" redisplay="${symbol_pound}{component.valid}"
+						>
+							<ui:insert />
+						</p:password>
+					</c:when>
+					<c:when test="${symbol_pound}{type eq 'custom'}">
+						<ui:insert />
+					</c:when>
+
+					<!-- Other specific input types can be added as new c:when here. -->
+
+					<c:otherwise>
+						<p:inputText type="${symbol_pound}{type}" 
+							id="${symbol_pound}{id}" widgetVar="${symbol_pound}{id}_w" styleClass="${symbol_pound}{inputStyleClass}" label="${symbol_pound}{label}" tabindex="1"
+							value="${symbol_pound}{value}" required="${symbol_pound}{required}" autocomplete="${symbol_pound}{autocomplete}" disabled="${symbol_pound}{disabled}"
+							maxlength="${symbol_pound}{maxlength}"
+						>
+							<ui:insert />
+						</p:inputText>
+					</c:otherwise>
+				</c:choose>
+			</ui:insert>
+
+			<ui:insert name="beforeMessages" />
+
+			<ui:insert name="messages">
+				<o:messages id="${symbol_pound}{id}_m" for="${symbol_pound}{id}" escape="${symbol_pound}{escapeMessages}" 
+					styleClass="messages ${symbol_pound}{messagesStyleClass}" infoClass="info" warnClass="warn" errorClass="error" />
+			</ui:insert>
+		</c:if>
+	</h:panelGroup>
+</ui:composition>

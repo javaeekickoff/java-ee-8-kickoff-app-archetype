@@ -1,0 +1,35 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:k="http://kickoff.example.org/ui"
+>
+	<section>
+		<h4>${symbol_pound}{i18n['general.company']}</h4>
+		<ul>
+			<li><k:link path="about" /></li>
+			<li><k:link path="help" /></li>
+			<li><k:link path="contact" /></li>
+		</ul>
+	</section>
+
+	<section>
+		<h4>${symbol_pound}{i18n['general.legal']}</h4>
+		<ul>
+			<li><k:link path="terms-of-service" /></li>
+			<li><k:link path="privacy-policy" /></li>
+			<li><k:link path="cookie-policy" /></li>
+		</ul>
+	</section>
+
+	<section>
+		<h4>${symbol_pound}{i18n['general.social']}</h4>
+		<ul>
+			<li><a href="https://twitter.com/omnifaces" target="_blank"><i class="fa fa-twitter" />OmniFaces</a></li>
+			<li><a href="${projectURL}" target="_blank" ><i class="fa fa-github" />javaeekickoff</a></li>
+			<li><a href="http://balusc.omnifaces.org" target="_blank"><i class="fa fa-rss" />BalusC</a> - <a href="http://arjan-tijms.omnifaces.org" target="_blank">Arjan</a></li>
+		</ul>
+	</section>
+</ui:composition>

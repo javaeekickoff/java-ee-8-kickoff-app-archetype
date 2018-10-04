@@ -1,0 +1,26 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!-- 
+	This tag file renders a form which always submits to exact request URI.
+-->
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+>
+	<o:tagAttribute name="id" />
+	<o:tagAttribute name="fieldset" default="${symbol_pound}{true}" />
+	<o:tagAttribute name="stateless" default="${symbol_pound}{not activeUser.present}" />
+
+	<f:view transient="${symbol_pound}{stateless}">
+		<o:form id="${symbol_pound}{id}" useRequestURI="true" styleClass="${symbol_pound}{stateless ? 'stateless' : ''}">
+			<c:if test="${symbol_pound}{fieldset}"><h:outputText value="&lt;fieldset&gt;" escape="false" /></c:if>
+				<ui:insert />
+			<c:if test="${symbol_pound}{fieldset}"><h:outputText value="&lt;/fieldset&gt;" escape="false" /></c:if>
+		</o:form>
+	</f:view>
+</ui:composition>

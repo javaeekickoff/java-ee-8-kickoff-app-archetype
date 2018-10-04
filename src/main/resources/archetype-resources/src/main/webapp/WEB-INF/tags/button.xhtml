@@ -1,0 +1,32 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!-- 
+	This tag file renders a button which is to be placed inside k:buttons.
+-->
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:p="http://primefaces.org/ui"
+>
+	<o:tagAttribute name="id" />
+	<o:tagAttribute name="path" />
+	<o:tagAttribute name="value" default="${symbol_pound}{i18n['general.' += id]}" />
+	<o:methodParam name="actionParam" value="${symbol_pound}{action}" />
+	<o:tagAttribute name="ajax" default="${symbol_pound}{true}" />
+
+	<c:choose>
+		<c:when test="${symbol_pound}{empty path}">
+			<p:commandButton id="${symbol_pound}{id}" value="${symbol_pound}{value}" tabindex="1"
+				action="${symbol_pound}{actionParam}" update="@form" ajax="${symbol_pound}{ajax}">
+			</p:commandButton>
+		</c:when>
+		<c:otherwise>
+			<p:button id="${symbol_pound}{id}" value="${symbol_pound}{value}" tabindex="2"
+				outcome="/${symbol_pound}{path}" styleClass="tertiary" />
+		</c:otherwise>
+	</c:choose>	
+</ui:composition>

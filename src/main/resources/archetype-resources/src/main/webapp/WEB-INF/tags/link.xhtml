@@ -1,0 +1,23 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!-- 
+	This tag file renders an internal link.
+-->
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:o="http://omnifaces.org/ui"
+>
+	<o:tagAttribute name="path" />
+	<o:tagAttribute name="value" />
+
+	<h:link
+		outcome="/${symbol_pound}{path}" 
+		value="${symbol_pound}{value eq null ? i18n[page.get(path).name += '.title'] : value}"
+		title="${symbol_pound}{empty component.value ? i18n[page.get(path).name += '.title'] : null}"
+		styleClass="page ${symbol_pound}{page.is(path) ? 'current' : ''}">
+		<ui:insert />
+	</h:link>
+</ui:composition>

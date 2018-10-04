@@ -1,0 +1,27 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition template="/WEB-INF/templates/errorpage.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+>
+	<ui:define name="errorpageContent">
+		<c:if test="${symbol_pound}{dev}">
+			<o:importFunctions type="org.omnifaces.util.Faces" />
+			<c:set var="fromURL" value="${symbol_pound}{Faces:getRequestURLWithQueryString()}" scope="request" />
+
+			<section>
+				<h2>Detail <small>(only shown during development mode)</small></h2>
+				<ul>
+					<li>Exception: <code>${symbol_pound}{requestScope['javax.servlet.error.message']}</code></li>
+					<li>Request URI: <code><a href="${symbol_pound}{fromURL}">${symbol_pound}{fromURL}</a></code></li>
+					<li>Ajax request: <code>${symbol_pound}{facesContext.partialViewContext.ajaxRequest ? 'Yes' : 'No'}</code></li>
+					<li>User agent: <code>${symbol_pound}{header['user-agent']}</code></li>
+				</ul>
+				<pre><code>${symbol_pound}{of:printStackTrace(requestScope['javax.servlet.error.exception'])}</code></pre>
+			</section>
+		</c:if>
+	</ui:define>
+</ui:composition>
